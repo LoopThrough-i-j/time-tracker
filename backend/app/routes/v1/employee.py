@@ -119,24 +119,10 @@ async def get_employee(emp_id: str) -> EmployeeData:
     )
 
 
-@employee_router.get("/deactivate/{emp_id}", response_model=EmployeeData)
-async def deactivate_employee(emp_id: str) -> EmployeeData:
+@employee_router.get("/deactivate/{emp_id}")
+async def deactivate_employee(emp_id: str) -> dict[str, str]:
     employee_service = EmployeeService()
 
-    employee = employee_service.deactivate_employee(emp_id)
+    employee_service.deactivate_employee(emp_id)
 
-    invited_timestamp = int(employee.invited_at.timestamp() * 1000)
-    created_at_timestamp = int(employee.created_at.timestamp() * 1000)
-
-    return EmployeeData(
-        id=employee.id,
-        name=employee.name,
-        email=employee.email,
-        teamId=employee.team_id,
-        identifier=employee.identifier,
-        type=employee.type.value,
-        projects=employee.projects,
-        deactivated=0 if employee.is_active else 1,
-        invited=invited_timestamp,
-        createdAt=created_at_timestamp,
-    )
+    return {"message": ResponseMessages.EMPLOYEE_DEACTIVATED}

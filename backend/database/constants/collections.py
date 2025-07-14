@@ -4,3 +4,4 @@ class DatabaseCollections:
 
     EMPLOYEES = "employees"
     PROJECTS = "projects"
+    TASKS = "tasks"

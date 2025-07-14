@@ -201,6 +201,6 @@ async def delete_project(project_id: str) -> dict[str, str]:
     success = project_service.delete_project(project_id)
 
     if success:
-        return {"message": "Project deleted successfully"}
+        return {"message": ResponseMessages.PROJECT_DELETED}
     else:
-        return {"message": "Failed to delete project"}
+        return {"message": ResponseMessages.PROJECT_DELETE_FAILED}
