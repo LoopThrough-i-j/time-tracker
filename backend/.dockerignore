@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.coverage
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker
+Dockerfile*
+docker-compose*.yaml
+docker-compose*.yml
+.dockerignore
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+docs/
+
+# Test files
+test_*.py
+*_test.py
+tests/
+
+# Code formatting config
+.flake8
+pyproject.toml
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Temporary files
+tmp/
+temp/

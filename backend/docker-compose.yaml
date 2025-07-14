@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  mercor-backend:
+    container_name: mercor-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - APP_ENV=DEV
+      - DEBUG=true
+      - DOC_URL=/docs
+
+      # Server Configurations
+      - HOST=0.0.0.0
+      - PORT=8080
+
+      # MongoDB Configurations
+      - MONGO_URL=mongodb://mercor_user:mercor_password@mongodb:27017
+      - MONGO_DATABASE=mercor_dev
+      - MONGO_USERNAME=mercor_user
+      - MONGO_PASSWORD=mercor_password
+
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/mercor-backend
+    depends_on:
+      - mongodb
+    networks:
+      - mercor-network
+    restart: unless-stopped
+
+  mongodb:
+    container_name: mercor-mongodb
+    image: mongo:7.0
+    environment:
+      - MONGO_INITDB_DATABASE=mercor_dev
+      - MONGO_INITDB_ROOT_USERNAME=mercor_user
+      - MONGO_INITDB_ROOT_PASSWORD=mercor_password
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mercor-network
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  mercor-network:
+    driver: bridge

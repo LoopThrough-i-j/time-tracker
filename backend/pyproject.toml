@@ -1,0 +1,15 @@
+[tool.black]
+line-length = 120
+extend-exclude = ".venv"
+
+[tool.isort]
+profile = "black"
+line_length = 120
+skip_gitignore = true
+group_by_package = true
+combine_as_imports = true
+multi_line_output=3
+auto_identify_namespace_packages = true
+sections = ['FUTURE', 'STDLIB', 'THIRDPARTY', 'LOCALFOLDER', 'FIRSTPARTY']
+known_first_party = ["database", "services", "constants"]
+known_local_folder = ["app"]

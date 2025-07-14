@@ -1,0 +1,14 @@
+from pydantic import BaseModel
+
+
+class Tag(BaseModel):
+    name: str
+    description: str = str()
+
+
+class APITags:
+    EMPLOYEE = Tag(name="Employee", description="Employee management operations")
+
+    @classmethod
+    def to_list(cls):
+        return [v.model_dump() for k, v in cls.__dict__.items() if isinstance(v, Tag)]
