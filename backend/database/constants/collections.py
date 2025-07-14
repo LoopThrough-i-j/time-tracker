@@ -3,3 +3,4 @@ class DatabaseCollections:
     """Database collection constants"""
 
     EMPLOYEES = "employees"
+    PROJECTS = "projects"

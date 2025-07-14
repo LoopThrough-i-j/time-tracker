@@ -14,7 +14,7 @@ class EmployeeActions(BaseActions[Employee]):
         email: str,
         team_id: str,
         identifier: str,
-        invited_at: datetime = None,
+        invited_at: datetime | None = None,
         type: EmployeeType = EmployeeType.PERSONAL,
     ) -> Employee:
         if invited_at is None:

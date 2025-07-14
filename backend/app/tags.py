@@ -8,6 +8,7 @@ class Tag(BaseModel):
 
 class APITags:
     EMPLOYEE = Tag(name="Employee", description="Employee management operations")
+    PROJECT = Tag(name="Project", description="Project management operations")
 
     @classmethod
     def to_list(cls):

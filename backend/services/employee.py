@@ -2,12 +2,14 @@ from datetime import datetime, timezone
 
 from constants.exceptions import BadRequestError
 from database.mongodb.actions.employee import EmployeeActions
+from database.mongodb.actions.project import ProjectActions
 from database.mongodb.models.employee import Employee, EmployeeType
 
 
 class EmployeeService:
     def __init__(self) -> None:
         self.employee_actions = EmployeeActions()
+        self.project_actions = ProjectActions()
 
     def invite_employee(self, name: str, email: str, team_id: str) -> Employee:
         existing_employee = self.employee_actions.get_by_email(email)
@@ -36,22 +38,47 @@ class EmployeeService:
     def get_all_employees(self) -> list[Employee]:
         return self.employee_actions.find_records(query={})
 
-    def update_employee(self, employee_id: str, name: str, email: str, team_id: str, projects: list[str]) -> Employee:
+    def update_employee(
+        self,
+        employee_id: str,
+        name: str | None = None,
+        email: str | None = None,
+        team_id: str | None = None,
+        projects: list[str] | None = None,
+    ) -> Employee:
         existing_employee = self.employee_actions.get_by_id(employee_id)
         if not existing_employee:
             raise BadRequestError("Employee not found")
 
-        if existing_employee.email != email:
-            employee_with_email = self.employee_actions.get_by_email(email)
-            if employee_with_email and employee_with_email.id != employee_id:
-                raise BadRequestError("Employee with this email already exists")
+        update_data = {}
 
-        existing_employee.name = name
-        existing_employee.email = email
-        existing_employee.team_id = team_id
-        existing_employee.projects = projects
+        if name is not None:
+            update_data["name"] = name
 
-        updated_employee = self.employee_actions.update_document(existing_employee)
+        if email is not None:
+            update_data["email"] = email
+
+        if team_id is not None:
+            update_data["team_id"] = team_id
+
+        if projects is not None:
+            update_data["projects"] = projects
+            old_projects = set(existing_employee.projects)
+            new_projects = set(projects)
+            projects_to_add = list(new_projects - old_projects)
+            projects_to_remove = list(old_projects - new_projects)
+        else:
+            projects_to_add = []
+            projects_to_remove = []
+
+        updated_employee = self.employee_actions.update_fields(employee_id, update_data)
+
+        if projects_to_add:
+            self.project_actions.bulk_add_to_set(projects_to_add, "employees", [employee_id])
+
+        if projects_to_remove:
+            self.project_actions.bulk_pull(projects_to_remove, "employees", [employee_id])
+
         return updated_employee
 
     def deactivate_employee(self, employee_id: str) -> Employee:
@@ -59,7 +86,9 @@ class EmployeeService:
         if not existing_employee:
             raise BadRequestError("Employee not found")
 
-        existing_employee.is_active = False
+        updated_employee = self.employee_actions.update_fields(employee_id, {"is_active": False, "projects": []})
 
-        updated_employee = self.employee_actions.update_document(existing_employee)
+        if existing_employee.projects:
+            self.project_actions.bulk_pull(existing_employee.projects, "employees", [employee_id])
+
         return updated_employee

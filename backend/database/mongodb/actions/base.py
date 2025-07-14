@@ -53,9 +53,33 @@ class BaseActions(Generic[ModelType]):
 
         return self.model.model_validate(document)
 
+    def update_fields(
+        self, doc_id: str, data: dict[str, Any], custom: dict[str, Any] = {}, ignore_none: bool = True
+    ) -> ModelType:
+        data = {k: v for k, v in data.items() if v is not None or not ignore_none}
+        data["updated_at"] = datetime.now(timezone.utc)
+
+        document = self.collection.find_one_and_update(
+            {"_id": doc_id}, {"$set": data, **custom}, return_document=ReturnDocument.AFTER
+        )
+        return self.model.model_validate(document)
+
+    def add_to_set(self, doc_id: str, field: str, value: list) -> ModelType:
+        update_operation = {
+            "$addToSet": {field: {"$each": value}},
+            "$set": {"updated_at": datetime.now(timezone.utc)},
+        }
+
+        document = self.collection.find_one_and_update(
+            {"_id": doc_id},
+            update_operation,
+            return_document=ReturnDocument.AFTER,
+        )
+        return self.model.model_validate(document)
+
     def find_records(
         self,
-        query: dict[str, Any] = None,
+        query: dict[str, Any] | None = None,
         sort: list[tuple[str, int]] | None = None,
         offset: int | None = None,
         limit: int | None = None,
@@ -93,7 +117,7 @@ class BaseActions(Generic[ModelType]):
 
     def count_records(
         self,
-        query: dict[str, Any] = None,
+        query: dict[str, Any] | None = None,
         is_active: bool | None = True,
         is_deleted: bool | None = False,
     ) -> int:
@@ -106,3 +130,23 @@ class BaseActions(Generic[ModelType]):
             query["is_deleted"] = is_deleted
 
         return self.collection.count_documents(query)
+
+    def bulk_add_to_set(self, doc_ids: list[str], field: str, value: list) -> int:
+        result = self.collection.update_many(
+            {"_id": {"$in": doc_ids}},
+            {
+                "$addToSet": {field: {"$each": value}},
+                "$set": {"updated_at": datetime.now(timezone.utc)},
+            },
+        )
+        return result.modified_count
+
+    def bulk_pull(self, doc_ids: list[str], field: str, value: list) -> int:
+        result = self.collection.update_many(
+            {"_id": {"$in": doc_ids}},
+            {
+                "$pull": {field: {"$in": value}},
+                "$set": {"updated_at": datetime.now(timezone.utc)},
+            },
+        )
+        return result.modified_count
