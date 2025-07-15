@@ -20,7 +20,7 @@ def list_tasks() -> list[TaskResponse]:
 
     return [
         TaskResponse(
-            id=str(task.id),
+            id=task.id,
             name=task.name,
             description=task.description,
             employees=task.employees,
@@ -65,7 +65,7 @@ def create_task(request_data: CreateTaskRequest) -> TaskResponse:
         deadline_timestamp = int(task.deadline.timestamp() * 1000)
 
     return TaskResponse(
-        id=str(task.id),
+        id=task.id,
         name=task.name,
         description=task.description,
         employees=task.employees,
@@ -94,7 +94,7 @@ def get_task(task_id: str) -> TaskResponse:
         deadline_timestamp = int(task.deadline.timestamp() * 1000)
 
     return TaskResponse(
-        id=str(task.id),
+        id=task.id,
         name=task.name,
         description=task.description,
         employees=task.employees,
@@ -138,7 +138,7 @@ def update_task(task_id: str, request_data: UpdateTaskRequest) -> TaskResponse:
         deadline_timestamp = int(task.deadline.timestamp() * 1000)
 
     return TaskResponse(
-        id=str(task.id),
+        id=task.id,
         name=task.name,
         description=task.description,
         employees=task.employees,

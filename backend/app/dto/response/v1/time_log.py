@@ -1,11 +1,11 @@
 from pydantic import Field
 
-from app.dto.response.base import BaseResponse
+from app.dto.response.base import BaseResponseDataModel
 
 from database.mongodb.models.time_log import TimeLogType
 
 
-class TimeLogResponse(BaseResponse):
+class TimeLogResponse(BaseResponseDataModel):
     id: str = Field()
     type: TimeLogType = Field()
     note: str | None = Field()
@@ -45,6 +45,6 @@ class TimeLogResponse(BaseResponse):
     updated_at: int = Field(alias="updatedAt")
 
 
-class TimeLogListResponse(BaseResponse):
+class TimeLogListResponse(BaseResponseDataModel):
     time_logs: list[TimeLogResponse] = Field()
     total: int = Field()

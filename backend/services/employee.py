@@ -23,8 +23,9 @@ class EmployeeService:
             email=email,
             team_id=team_id,
             identifier=email,
+            password=None,
             invited_at=invited_datetime,
-            type=EmployeeType.PERSONAL,
+            employee_type=EmployeeType.PERSONAL,
         )
 
         return employee

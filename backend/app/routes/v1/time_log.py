@@ -34,7 +34,7 @@ def create_time_log(request_data: CreateTimeLogRequest) -> TimeLogResponse:
     )
 
     return TimeLogResponse(
-        id=str(time_log.id),
+        id=time_log.id,
         type=time_log.type,
         note=time_log.note,
         start=time_log.start,

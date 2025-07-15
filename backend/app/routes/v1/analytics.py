@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Query
 
-from app.dto.response.v1.analytics import ProjectTimeAnalytics
-from app.dto.response.v1.time_log import TimeLogResponse
+from app.dto.response.v1.analytics import ProjectTimeAnalyticsResponse, WindowAnalyticsResponse
 from app.tags import APITags
 
 from services.analytics import AnalyticsService
@@ -9,7 +8,7 @@ from services.analytics import AnalyticsService
 analytics_router = APIRouter(prefix="/analytics", tags=[APITags.TIME_LOG.name])
 
 
-@analytics_router.get("/window", response_model=list[TimeLogResponse])
+@analytics_router.get("/window", response_model=list[WindowAnalyticsResponse])
 def get_analytics_window(
     start: int = Query(),
     end: int = Query(),
@@ -19,7 +18,7 @@ def get_analytics_window(
     projectId: str | None = Query(default=None),
     taskId: str | None = Query(default=None),
     shiftId: str | None = Query(default=None),
-) -> list[TimeLogResponse]:
+) -> list[WindowAnalyticsResponse]:
     analytics_service = AnalyticsService()
 
     time_logs = analytics_service.get_window_analytics(
@@ -34,8 +33,8 @@ def get_analytics_window(
     )
 
     return [
-        TimeLogResponse(
-            id=str(log.id),
+        WindowAnalyticsResponse(
+            id=log.id,
             type=log.type,
             note=log.note,
             start=log.start,
@@ -58,7 +57,7 @@ def get_analytics_window(
             domain=log.domain,
             name=log.name,
             hwid=log.hwid,
-            os=log.os,
+            operating_system=log.operating_system,
             os_version=log.os_version,
             processed=log.processed,
             employee_id=log.employee_id,
@@ -77,7 +76,7 @@ def get_analytics_window(
     ]
 
 
-@analytics_router.get("/project-time", response_model=list[ProjectTimeAnalytics])
+@analytics_router.get("/project-time", response_model=list[ProjectTimeAnalyticsResponse])
 def get_project_time_analytics(
     start: int = Query(),
     end: int = Query(),
@@ -87,7 +86,7 @@ def get_project_time_analytics(
     projectId: str | None = Query(default=None),
     taskId: str | None = Query(default=None),
     shiftId: str | None = Query(default=None),
-) -> list[ProjectTimeAnalytics]:
+) -> list[ProjectTimeAnalyticsResponse]:
     analytics_service = AnalyticsService()
 
     project_analytics = analytics_service.get_project_time_analytics(
@@ -102,7 +101,7 @@ def get_project_time_analytics(
     )
 
     return [
-        ProjectTimeAnalytics(
+        ProjectTimeAnalyticsResponse(
             id=project["id"],
             time=project["time"],
             costs=project["costs"],

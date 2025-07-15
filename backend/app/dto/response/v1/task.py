@@ -1,9 +1,9 @@
 from pydantic import Field
 
-from app.dto.response.base import BaseResponse
+from app.dto.response.base import BaseResponseDataModel
 
 
-class TaskResponse(BaseResponse):
+class TaskResponse(BaseResponseDataModel):
     id: str = Field()
     name: str | None = Field()
     description: str | None = Field()
@@ -18,6 +18,6 @@ class TaskResponse(BaseResponse):
     updated_at: int = Field(alias="updatedAt")
 
 
-class TaskListResponse(BaseResponse):
+class TaskListResponse(BaseResponseDataModel):
     tasks: list[TaskResponse] = Field()
     total: int = Field()

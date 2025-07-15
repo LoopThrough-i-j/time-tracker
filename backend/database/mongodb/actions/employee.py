@@ -15,7 +15,7 @@ class EmployeeActions(BaseActions[Employee]):
         team_id: str,
         identifier: str,
         invited_at: datetime | None = None,
-        type: EmployeeType = EmployeeType.PERSONAL,
+        employee_type: EmployeeType = EmployeeType.PERSONAL,
     ) -> Employee:
         if invited_at is None:
             invited_at = datetime.now(timezone.utc)
@@ -23,9 +23,10 @@ class EmployeeActions(BaseActions[Employee]):
         employee = Employee(
             name=name,
             email=email,
+            password=None,
             team_id=team_id,
             identifier=identifier,
-            type=type,
+            type=employee_type,
             invited_at=invited_at,
         )
         return self.insert_record(employee)

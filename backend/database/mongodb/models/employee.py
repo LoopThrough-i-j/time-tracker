@@ -17,6 +17,7 @@ class Employee(BaseMongoModel):
 
     name: str = Field()
     email: EmailStr = Field()
+    password: str | None = Field(default=None)
     team_id: str = Field()
     identifier: str = Field()
     type: EmployeeType = Field(default=EmployeeType.PERSONAL)
