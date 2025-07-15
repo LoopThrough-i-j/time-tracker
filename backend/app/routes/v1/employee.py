@@ -1,12 +1,15 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from app.constants.response_messages import ResponseMessages
+from app.dependencies.auth import get_current_employee_id
 from app.dto.request.v1.employee import EmployeeInviteRequest, EmployeeUpdateRequest
 from app.dto.response.v1.employee import EmployeeData
+from app.dto.response.v1.task import TaskResponse
 from app.tags import APITags
 
 from constants.exceptions import NotFoundError
 from services.employee import EmployeeService
+from services.task import TaskService
 
 employee_router = APIRouter(prefix="/employee", tags=[APITags.EMPLOYEE.name])
 
@@ -91,6 +94,49 @@ async def update_employee(emp_id: str, request_data: EmployeeUpdateRequest) -> E
         invited=invited_timestamp,
         created_at=created_at_timestamp,
     )
+
+
+@employee_router.get("/tasks", response_model=list[TaskResponse])
+async def get_employee_tasks(employee_id: str = Depends(get_current_employee_id)) -> list[TaskResponse]:
+    """Get all tasks assigned to the authenticated employee"""
+    task_service = TaskService()
+
+    print(f"DEBUG: Getting tasks for employee_id: {employee_id}")
+
+    # Get tasks assigned to the employee
+    tasks = task_service.get_tasks_by_employee(employee_id)
+
+    print(f"DEBUG: Found {len(tasks)} tasks for employee {employee_id}")
+
+    task_responses = []
+    for task in tasks:
+        print(f"DEBUG: Processing task {task.id} with employees: {task.employees}")
+        created_at_timestamp = int(task.created_at.timestamp() * 1000)
+        updated_at_timestamp = int(task.updated_at.timestamp() * 1000)
+
+        deadline_timestamp = None
+        if task.deadline:
+            deadline_timestamp = int(task.deadline.timestamp() * 1000)
+
+        task_responses.append(
+            TaskResponse(
+                id=task.id,
+                name=task.name,
+                description=task.description,
+                employees=task.employees,
+                project_id=task.project_id,
+                deadline=deadline_timestamp,
+                status=task.status,
+                labels=task.labels,
+                priority=task.priority,
+                billable=task.billable,
+                created_at=created_at_timestamp,
+                updated_at=updated_at_timestamp,
+            )
+        )
+
+    print(f"DEBUG: Returning {len(task_responses)} task responses")
+    return task_responses
 
 
 @employee_router.get("/{emp_id}", response_model=EmployeeData)

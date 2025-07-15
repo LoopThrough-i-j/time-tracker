@@ -47,6 +47,10 @@ class TaskService:
     def get_all_tasks(self) -> list[Task]:
         return self.task_actions.find_records({})
 
+    def get_tasks_by_employee(self, employee_id: str) -> list[Task]:
+        """Get all tasks assigned to a specific employee"""
+        return self.task_actions.find_records({"employees": employee_id})
+
     def update_task(
         self,
         task_id: str,

@@ -112,15 +112,12 @@ class TimeLogService:
             raise NotFoundError("Time log not found")
 
         more_recent_log = self.time_log_actions.find_records(
-            query={
-                "employee_id": employee_id,
-                "start": {"$gt": time_log.start}
-            },
+            query={"employee_id": employee_id, "start": {"$gt": time_log.start}},
             limit=1,
             is_active=True,
             is_deleted=False,
         )
-        
+
         if more_recent_log:
             raise BadRequestError(ResponseMessages.TIME_LOG_UPDATE_BLOCKED)
 

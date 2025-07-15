@@ -27,7 +27,7 @@ class AnalyticsService:
             shift_id=shift_id,
             timezone=timezone,
         )
-        
+
         return [log for log in time_logs if log.start != log.end]
 
     def get_project_time_analytics(
@@ -57,7 +57,7 @@ class AnalyticsService:
         for log in time_logs:
             if log.start == log.end:
                 continue
-                
+
             project_id = log.project_id
 
             if project_id not in project_analytics:
