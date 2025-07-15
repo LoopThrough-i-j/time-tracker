@@ -18,7 +18,7 @@ class TaskActions(BaseActions[Task]):
         deadline: datetime | None = None,
         status: str | None = None,
         priority: str | None = None,
-        billable: bool | None = None,
+        billable: bool = True,
     ) -> Task:
 
         task = Task(

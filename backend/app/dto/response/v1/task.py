@@ -13,7 +13,7 @@ class TaskResponse(BaseResponse):
     status: str | None = Field()
     labels: list[str] = Field()
     priority: str | None = Field()
-    billable: bool | None = Field()
+    billable: bool = Field()
     created_at: int = Field(alias="createdAt")
     updated_at: int = Field(alias="updatedAt")
 

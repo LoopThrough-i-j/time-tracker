@@ -1,0 +1,74 @@
+from fastapi import APIRouter
+
+from app.dto.request.v1.time_log import CreateTimeLogRequest
+from app.dto.response.v1.time_log import TimeLogResponse
+from app.tags import APITags
+
+from services.time_log import TimeLogService
+
+time_log_router = APIRouter(prefix="/time-log", tags=[APITags.TIME_LOG.name])
+
+
+@time_log_router.post("/", response_model=TimeLogResponse)
+def create_time_log(request_data: CreateTimeLogRequest) -> TimeLogResponse:
+    time_log_service = TimeLogService()
+
+    time_log = time_log_service.create_time_log(
+        time_log_type=request_data.type,
+        note=request_data.note,
+        start=request_data.start,
+        end=request_data.end,
+        timezone_offset=request_data.timezone_offset,
+        shift_id=request_data.shift_id,
+        project_id=request_data.project_id,
+        task_id=request_data.task_id,
+        overtime=request_data.overtime,
+        user=request_data.user,
+        computer=request_data.computer,
+        domain=request_data.domain,
+        hwid=request_data.hwid,
+        operating_system=request_data.operating_system,
+        os_version=request_data.os_version,
+        employee_id=request_data.employee_id,
+        negative_time=request_data.negative_time,
+    )
+
+    return TimeLogResponse(
+        id=str(time_log.id),
+        type=time_log.type,
+        note=time_log.note,
+        start=time_log.start,
+        end=time_log.end,
+        timezone_offset=time_log.timezone_offset,
+        shift_id=time_log.shift_id,
+        project_id=time_log.project_id,
+        task_id=time_log.task_id,
+        paid=time_log.paid,
+        billable=time_log.billable,
+        overtime=time_log.overtime,
+        bill_rate=time_log.bill_rate,
+        overtime_bill_rate=time_log.overtime_bill_rate,
+        pay_rate=time_log.pay_rate,
+        overtime_pay_rate=time_log.overtime_pay_rate,
+        task_status=time_log.task_status,
+        task_priority=time_log.task_priority,
+        user=time_log.user,
+        computer=time_log.computer,
+        domain=time_log.domain,
+        name=time_log.name,
+        hwid=time_log.hwid,
+        operating_system=time_log.operating_system,
+        os_version=time_log.os_version,
+        processed=time_log.processed,
+        employee_id=time_log.employee_id,
+        team_id=time_log.team_id,
+        shared_settings_id=time_log.shared_settings_id,
+        organization_id=time_log.organization_id,
+        start_translated=time_log.start_translated,
+        end_translated=time_log.end_translated,
+        negative_time=time_log.negative_time,
+        deleted_screenshots=time_log.deleted_screenshots,
+        index=time_log.index,
+        created_at=int(time_log.created_at.timestamp() * 1000),
+        updated_at=int(time_log.updated_at.timestamp() * 1000),
+    )

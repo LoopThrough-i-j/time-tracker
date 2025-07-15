@@ -17,4 +17,4 @@ class Task(BaseMongoModel):
     status: str | None = Field(default=None)
     labels: list[str] = Field(default_factory=list)
     priority: str | None = Field(default=None)
-    billable: bool | None = Field(default=None)
+    billable: bool = Field(default=True)

@@ -1,12 +1,15 @@
 from datetime import datetime
 
 from database.mongodb.actions.task import TaskActions
+from database.mongodb.actions.project import ProjectActions
 from database.mongodb.models.task import Task
+from constants.exceptions import NotFoundError
 
 
 class TaskService:
     def __init__(self):
         self.task_actions = TaskActions()
+        self.project_actions = ProjectActions()
 
     def create_task(
         self,
@@ -20,6 +23,10 @@ class TaskService:
         priority: str | None = None,
         billable: bool | None = None,
     ) -> Task:
+        # Get project to inherit billable status if not explicitly provided
+        project = self.project_actions.get_by_id(project_id)
+        if not project:
+            raise NotFoundError(f"Project with id {project_id} not found")
 
         created_task = self.task_actions.create_task(
             name=name,
@@ -30,7 +37,7 @@ class TaskService:
             deadline=deadline,
             status=status,
             priority=priority,
-            billable=billable,
+            billable=billable if billable is not None else project.billable,
         )
 
         return created_task

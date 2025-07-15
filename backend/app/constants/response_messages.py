@@ -10,3 +10,6 @@ class ResponseMessages:
     TASK_NOT_FOUND: Final[str] = "Task not found"
     TASK_DELETED: Final[str] = "Task deleted successfully"
     TASK_DELETE_FAILED: Final[str] = "Failed to delete task"
+    TIME_LOG_NOT_FOUND: Final[str] = "Time log not found"
+    TIME_LOG_DELETED: Final[str] = "Time log deleted successfully"
+    TIME_LOG_DELETE_FAILED: Final[str] = "Failed to delete time log"

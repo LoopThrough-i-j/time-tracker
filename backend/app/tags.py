@@ -10,6 +10,7 @@ class APITags:
     EMPLOYEE = Tag(name="Employee", description="Employee management operations")
     PROJECT = Tag(name="Project", description="Project management operations")
     TASK = Tag(name="Task", description="Task management operations")
+    TIME_LOG = Tag(name="TimeLog", description="Time tracking and analytics operations")
 
     @classmethod
     def to_list(cls):
