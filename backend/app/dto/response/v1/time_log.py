@@ -43,8 +43,3 @@ class TimeLogResponse(BaseResponseDataModel):
     index: str | None = Field(alias="_index")
     created_at: int = Field(alias="createdAt")
     updated_at: int = Field(alias="updatedAt")
-
-
-class TimeLogListResponse(BaseResponseDataModel):
-    time_logs: list[TimeLogResponse] = Field()
-    total: int = Field()

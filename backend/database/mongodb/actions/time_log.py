@@ -11,16 +11,14 @@ class TimeLogActions(BaseActions[TimeLog]):
     def create_time_log(
         self,
         type: TimeLogType,
-        start: int,
-        end: int,
+        start: datetime,
+        end: datetime,
         timezone_offset: int,
         project_id: str,
         task_id: str,
         user: str,
         name: str,
         employee_id: str,
-        start_translated: int,
-        end_translated: int,
         note: str | None = None,
         shift_id: str | None = None,
         paid: bool = False,
@@ -48,8 +46,8 @@ class TimeLogActions(BaseActions[TimeLog]):
         time_log = TimeLog(
             type=type,
             note=note,
-            start=datetime.fromtimestamp(start / 1000),
-            end=datetime.fromtimestamp(end / 1000),
+            start=start,
+            end=end,
             timezone_offset=timezone_offset,
             shift_id=shift_id,
             project_id=project_id,
@@ -74,8 +72,6 @@ class TimeLogActions(BaseActions[TimeLog]):
             employee_id=employee_id,
             team_id=team_id,
             shared_settings_id=shared_settings_id,
-            start_translated=datetime.fromtimestamp(start_translated / 1000),
-            end_translated=datetime.fromtimestamp(end_translated / 1000),
             negative_time=negative_time,
             deleted_screenshots=deleted_screenshots,
             index=index,
@@ -141,7 +137,7 @@ class TimeLogActions(BaseActions[TimeLog]):
             is_deleted=False,
         )
 
-    def get_project_time_analytics(
+    def get_project_time_logs(
         self,
         start_time: int,
         end_time: int,
@@ -151,7 +147,7 @@ class TimeLogActions(BaseActions[TimeLog]):
         task_id: str | None = None,
         shift_id: str | None = None,
         timezone: str | None = None,
-    ) -> dict[str, dict[str, float]]:
+    ) -> list[TimeLog]:
         query = {
             "start": {
                 "$gte": datetime.fromtimestamp(start_time / 1000),
@@ -174,31 +170,9 @@ class TimeLogActions(BaseActions[TimeLog]):
         if shift_id is not None:
             query["shift_id"] = shift_id
 
-        time_logs = self.find_records(
+        return self.find_records(
             query=query,
             sort=[("start", -1)],
             is_active=True,
             is_deleted=False,
         )
-
-        project_analytics = {}
-
-        for log in time_logs:
-            project_id = log.project_id
-
-            if project_id not in project_analytics:
-                project_analytics[project_id] = {"time": 0, "costs": 0.0, "income": 0.0}
-
-            duration_ms = int((log.end - log.start).total_seconds() * 1000)
-
-            duration_hours = duration_ms / 1000 / 3600
-
-            project_analytics[project_id]["time"] += duration_ms
-
-            costs = duration_hours * log.pay_rate
-            project_analytics[project_id]["costs"] += costs
-
-            income = duration_hours * log.bill_rate
-            project_analytics[project_id]["income"] += income
-
-        return project_analytics

@@ -26,13 +26,13 @@ async def list_employees() -> list[EmployeeData]:
             id=employee.id,
             name=employee.name,
             email=employee.email,
-            teamId=employee.team_id,
+            team_id=employee.team_id,
             identifier=employee.identifier,
             type=employee.type.value,
             projects=employee.projects,
             deactivated=0 if employee.is_active else 1,
             invited=invited_timestamp,
-            createdAt=created_at_timestamp,
+            created_at=created_at_timestamp,
         )
         employee_list.append(employee_data)
 
@@ -44,7 +44,7 @@ async def invite_employee(request_data: EmployeeInviteRequest) -> EmployeeData:
     employee_service = EmployeeService()
 
     employee = employee_service.invite_employee(
-        name=request_data.name, email=request_data.email, team_id=request_data.teamId
+        name=request_data.name, email=request_data.email, team_id=request_data.team_id
     )
 
     invited_timestamp = int(employee.invited_at.timestamp() * 1000)
@@ -54,13 +54,13 @@ async def invite_employee(request_data: EmployeeInviteRequest) -> EmployeeData:
         id=employee.id,
         name=employee.name,
         email=employee.email,
-        teamId=employee.team_id,
+        team_id=employee.team_id,
         identifier=employee.identifier,
         type=employee.type.value,
         projects=employee.projects,
         deactivated=0 if employee.is_active else 1,
         invited=invited_timestamp,
-        createdAt=created_at_timestamp,
+        created_at=created_at_timestamp,
     )
 
 
@@ -72,7 +72,7 @@ async def update_employee(emp_id: str, request_data: EmployeeUpdateRequest) -> E
         employee_id=emp_id,
         name=request_data.name,
         email=request_data.email,
-        team_id=request_data.teamId,
+        team_id=request_data.team_id,
         projects=request_data.projects,
     )
 
@@ -83,13 +83,13 @@ async def update_employee(emp_id: str, request_data: EmployeeUpdateRequest) -> E
         id=employee.id,
         name=employee.name,
         email=employee.email,
-        teamId=employee.team_id,
+        team_id=employee.team_id,
         identifier=employee.identifier,
         type=employee.type.value,
         projects=employee.projects,
         deactivated=0 if employee.is_active else 1,
         invited=invited_timestamp,
-        createdAt=created_at_timestamp,
+        created_at=created_at_timestamp,
     )
 
 
@@ -109,13 +109,13 @@ async def get_employee(emp_id: str) -> EmployeeData:
         id=employee.id,
         name=employee.name,
         email=employee.email,
-        teamId=employee.team_id,
+        team_id=employee.team_id,
         identifier=employee.identifier,
         type=employee.type.value,
         projects=employee.projects,
         deactivated=0 if employee.is_active else 1,
         invited=invited_timestamp,
-        createdAt=created_at_timestamp,
+        created_at=created_at_timestamp,
     )
 
 

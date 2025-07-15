@@ -1,9 +1,9 @@
 from pydantic import Field
 
-from app.dto.request.base import BaseRequest
+from app.dto.request.base import BaseRequestModel
 
 
-class CreateTaskRequest(BaseRequest):
+class CreateTaskRequest(BaseRequestModel):
     name: str | None = Field(default=None, min_length=1, max_length=200)
     description: str | None = Field(default=None, min_length=1, max_length=1000)
     employees: list[str] = Field(default_factory=list)
@@ -15,7 +15,7 @@ class CreateTaskRequest(BaseRequest):
     billable: bool | None = Field(default=None)
 
 
-class UpdateTaskRequest(BaseRequest):
+class UpdateTaskRequest(BaseRequestModel):
     name: str | None = Field(default=None, min_length=1, max_length=200)
     description: str | None = Field(default=None, min_length=1, max_length=1000)
     employees: list[str] | None = Field(default=None)

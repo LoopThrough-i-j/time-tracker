@@ -4,8 +4,8 @@ from app.dto.request.base import BaseRequestModel
 
 
 class PayrollRequest(BaseRequestModel):
-    billRate: float = Field(description="Bill rate")
-    overtimeBillrate: float = Field(description="Overtime bill rate")
+    bill_rate: float = Field(alias="billRate", description="Bill rate")
+    overtime_billrate: float = Field(alias="overtimeBillrate", description="Overtime bill rate")
 
 
 class ProjectCreateRequest(BaseRequestModel):

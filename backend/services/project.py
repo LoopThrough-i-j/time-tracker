@@ -49,7 +49,7 @@ class ProjectService:
         )
 
         if employees:
-            self.employee_actions.bulk_add_to_set(employees, "projects", project.id)
+            self.employee_actions.bulk_add_to_set(employees, "projects", [project.id])
 
         return project
 

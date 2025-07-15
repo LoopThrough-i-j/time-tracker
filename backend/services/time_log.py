@@ -1,4 +1,8 @@
-from constants.exceptions import NotFoundError
+from datetime import datetime
+
+from app.constants.response_messages import ResponseMessages
+
+from constants.exceptions import BadRequestError, NotFoundError
 from database.mongodb.actions.employee import EmployeeActions
 from database.mongodb.actions.project import ProjectActions
 from database.mongodb.actions.task import TaskActions
@@ -13,11 +17,10 @@ class TimeLogService:
         self.project_actions = ProjectActions()
         self.employee_actions = EmployeeActions()
 
-    def create_time_log(
+    def start_time_log(
         self,
         time_log_type: TimeLogType,
-        start: int,
-        end: int,
+        start: datetime,
         timezone_offset: int,
         project_id: str,
         task_id: str,
@@ -31,8 +34,8 @@ class TimeLogService:
         hwid: str | None = None,
         operating_system: str | None = None,
         os_version: str | None = None,
-        negative_time: int = 0,
     ) -> TimeLog:
+
         task = self.task_actions.get_by_id(task_id)
         if not task:
             raise NotFoundError(f"Task with id {task_id} not found")
@@ -63,7 +66,7 @@ class TimeLogService:
             type=time_log_type,
             note=note,
             start=start,
-            end=end,
+            end=start,
             timezone_offset=timezone_offset,
             shift_id=shift_id,
             project_id=project_id,
@@ -88,11 +91,42 @@ class TimeLogService:
             employee_id=employee_id,
             team_id=team_id,
             shared_settings_id=None,
-            start_translated=start,
-            end_translated=end,
-            negative_time=negative_time,
+            negative_time=0,
             deleted_screenshots=0,
             index=None,
         )
 
         return created_time_log
+
+    def update_time_log(
+        self,
+        time_log_id: str,
+        employee_id: str,
+        end: datetime,
+    ) -> TimeLog:
+        time_log = self.time_log_actions.get_by_id(time_log_id)
+        if not time_log:
+            raise NotFoundError(f"Time log with id {time_log_id} not found")
+
+        if time_log.employee_id != employee_id:
+            raise NotFoundError("Time log not found")
+
+        more_recent_log = self.time_log_actions.find_records(
+            query={
+                "employee_id": employee_id,
+                "start": {"$gt": time_log.start}
+            },
+            limit=1,
+            is_active=True,
+            is_deleted=False,
+        )
+        
+        if more_recent_log:
+            raise BadRequestError(ResponseMessages.TIME_LOG_UPDATE_BLOCKED)
+
+        update_data = {
+            "end": end,
+        }
+
+        updated_time_log = self.time_log_actions.update_fields(time_log_id, update_data)
+        return updated_time_log

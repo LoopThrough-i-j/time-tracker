@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from database.mongodb.actions.base import BaseActions
-from database.mongodb.models.project import Project
+from database.mongodb.models.project import Payroll, Project
 
 
 class ProjectActions(BaseActions[Project]):
@@ -21,6 +21,10 @@ class ProjectActions(BaseActions[Project]):
         creator_id: str = "default-creator",
         organization_id: str = "default-org",
     ) -> Project:
+        payroll_obj = None
+        if payroll:
+            payroll_obj = Payroll(**payroll)
+
         project = Project(
             name=name,
             description=description,
@@ -29,7 +33,7 @@ class ProjectActions(BaseActions[Project]):
             priorities=priorities,
             billable=billable,
             deadline=deadline,
-            payroll=payroll,
+            payroll=payroll_obj,
             creator_id=creator_id,
             organization_id=organization_id,
         )

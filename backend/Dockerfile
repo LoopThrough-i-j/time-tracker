@@ -1,4 +1,4 @@
-FROM python:3.10.10-slim-buster
+FROM python:3.10-slim-bullseye
 
 RUN apt-get -y update && apt-get install -y \
     gcc \

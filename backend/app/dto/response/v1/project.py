@@ -4,8 +4,8 @@ from app.dto.response.base import BaseResponseDataModel
 
 
 class PayrollData(BaseResponseDataModel):
-    billRate: float = Field(description="Bill rate")
-    overtimeBillrate: float = Field(description="Overtime bill rate")
+    bill_rate: float = Field(alias="billRate", description="Bill rate")
+    overtime_billrate: float = Field(alias="overtimeBillrate", description="Overtime bill rate")
 
 
 class ProjectData(BaseResponseDataModel):
@@ -19,7 +19,7 @@ class ProjectData(BaseResponseDataModel):
     deadline: int | None = Field(description="Project deadline in milliseconds")
     payroll: PayrollData | None = Field(description="Payroll information")
     archived: bool = Field(description="Whether project is archived")
-    creatorId: str = Field(description="Creator user ID")
-    organizationId: str = Field(description="Organization ID")
+    creator_id: str = Field(alias="creatorId", description="Creator user ID")
+    organization_id: str = Field(alias="organizationId", description="Organization ID")
     teams: list[str] = Field(description="List of team IDs")
-    createdAt: int = Field(description="Creation timestamp in milliseconds")
+    created_at: int = Field(alias="createdAt", description="Creation timestamp in milliseconds")

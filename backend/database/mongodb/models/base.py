@@ -12,6 +12,7 @@ class BaseDataModel(BasePydanticModel):
         extra = "ignore"
         validate_default = True
         arbitrary_types_allowed = True
+        populate_by_name = True
 
     def model_dump_db(self) -> dict[str, Any]:
         python_model_dump = super().model_dump(mode="python", by_alias=True)

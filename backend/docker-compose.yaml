@@ -1,7 +1,8 @@
-version: '3.8'
+version: '3.9'
 
 services:
   mercor-backend:
+    platform: linux/arm64
     container_name: mercor-backend
     build:
       context: .
@@ -16,10 +17,15 @@ services:
       - PORT=8080
 
       # MongoDB Configurations
-      - MONGO_URL=mongodb://mercor_user:mercor_password@mongodb:27017
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
       - MONGO_DATABASE=mercor_dev
       - MONGO_USERNAME=mercor_user
       - MONGO_PASSWORD=mercor_password
+      - MONGO_URI_FORMAT=mongodb://{}:{}@{}:{}
+
+      # Security Configuration
+      - SECRET_KEY=mf00lxCoYX7CMpBySXPxMS+wt7H2lEkyqjNxtX8rCuk=
 
     ports:
       - "8080:8080"
@@ -33,6 +39,7 @@ services:
 
   mongodb:
     container_name: mercor-mongodb
+    platform: linux/arm64
     image: mongo:7.0
     environment:
       - MONGO_INITDB_DATABASE=mercor_dev

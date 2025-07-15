@@ -1,18 +1,18 @@
 from pydantic import EmailStr, Field
 
-from app.dto.request.base import BaseRequest
+from app.dto.request.base import BaseRequestModel
 
 
-class EmployeeLoginRequest(BaseRequest):
+class EmployeeLoginRequest(BaseRequestModel):
     email: EmailStr = Field()
     password: str = Field(min_length=1)
 
 
-class EmployeeRegisterRequest(BaseRequest):
+class EmployeeRegisterRequest(BaseRequestModel):
     email: EmailStr = Field()
     password: str = Field(min_length=6, max_length=100)
 
 
-class SignupLinkRequest(BaseRequest):
+class SignupLinkRequest(BaseRequestModel):
     employee_id: str = Field()
     expiry_hours: int = Field(default=24, ge=1, le=168)

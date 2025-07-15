@@ -23,7 +23,6 @@ class EmployeeService:
             email=email,
             team_id=team_id,
             identifier=email,
-            password=None,
             invited_at=invited_datetime,
             employee_type=EmployeeType.PERSONAL,
         )
@@ -63,6 +62,17 @@ class EmployeeService:
             update_data["team_id"] = team_id
 
         if projects is not None:
+            existing_projects = self.project_actions.find_records(query={"_id": {"$in": projects}})
+            existing_project_ids = {project.id for project in existing_projects}
+            invalid_project_ids = [project_id for project_id in projects if project_id not in existing_project_ids]
+
+            if invalid_project_ids:
+                project_word = "Project" if len(invalid_project_ids) == 1 else "Projects"
+                ids_str = invalid_project_ids[0] if len(invalid_project_ids) == 1 else str(invalid_project_ids)
+                raise BadRequestError(
+                    f"{project_word} with ID{'s' if len(invalid_project_ids) > 1 else ''} {ids_str} not found"
+                )
+
             update_data["projects"] = projects
             old_projects = set(existing_employee.projects)
             new_projects = set(projects)

@@ -1,3 +1,4 @@
+import base64
 import json
 import time
 from datetime import datetime, timedelta, timezone
@@ -18,7 +19,7 @@ class AuthService:
     def __init__(self):
         self.employee_actions = EmployeeActions()
         self.secret_key = EnvironmentVariables.SECRET_KEY
-        self.encryption_service = EncryptionService(self.secret_key.encode())
+        self.encryption_service = EncryptionService(base64.b64decode(self.secret_key))
         self.algorithm = "HS256"
         self.access_token_expire_hours = 24
 
@@ -45,8 +46,8 @@ class AuthService:
     def get_employee_by_id(self, employee_id: str) -> Optional[Employee]:
         return self.employee_actions.get_by_id(employee_id)
 
-    def update_employee_password(self, email: str, password: str) -> Employee:
-        existing_employee = self.employee_actions.get_by_email(email)
+    def update_employee_password(self, employee_id: str, password: str) -> Employee:
+        existing_employee = self.employee_actions.get_by_id(employee_id)
 
         if not existing_employee:
             raise NotFoundError("Employee not found. Please contact administrator to be invited first.")

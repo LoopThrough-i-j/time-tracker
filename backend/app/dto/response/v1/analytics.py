@@ -10,7 +10,7 @@ class WindowAnalyticsResponse(BaseResponseDataModel):
     type: TimeLogType = Field()
     note: str | None = Field()
     start: int = Field()
-    end: int = Field()
+    end: int | None = Field()
     timezone_offset: int = Field(alias="timezoneOffset")
     shift_id: str | None = Field(alias="shiftId")
     project_id: str = Field(alias="projectId")

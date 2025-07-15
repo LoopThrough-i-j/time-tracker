@@ -16,6 +16,7 @@ class BaseActions(Generic[ModelType]):
         self.collection: Collection[dict[str, Any]] = mongo_db[model.collection]
 
     def insert_record(self, record: ModelType) -> ModelType:
+        record.updated_at = datetime.now(timezone.utc)
         record_detail = record.model_dump_db()
         self.collection.insert_one(record_detail)
         return record
@@ -24,6 +25,9 @@ class BaseActions(Generic[ModelType]):
         if not records:
             return records
 
+        current_time = datetime.now(timezone.utc)
+        for record in records:
+            record.updated_at = current_time
         record_details = [record.model_dump_db() for record in records]
         self.collection.insert_many(record_details)
         return records

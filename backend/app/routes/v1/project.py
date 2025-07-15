@@ -20,8 +20,8 @@ async def create_project(request_data: ProjectCreateRequest) -> ProjectData:
     payroll_dict = None
     if request_data.payroll:
         payroll_dict = {
-            "bill_rate": request_data.payroll.billRate,
-            "overtime_billrate": request_data.payroll.overtimeBillrate,
+            "bill_rate": request_data.payroll.bill_rate,
+            "overtime_billrate": request_data.payroll.overtime_billrate,
         }
 
     deadline_datetime = None
@@ -44,8 +44,8 @@ async def create_project(request_data: ProjectCreateRequest) -> ProjectData:
     payroll_data = None
     if project.payroll:
         payroll_data = PayrollData(
-            billRate=project.payroll.bill_rate,
-            overtimeBillrate=project.payroll.overtime_billrate,
+            bill_rate=project.payroll.bill_rate,
+            overtime_billrate=project.payroll.overtime_billrate,
         )
 
     return ProjectData(
@@ -59,10 +59,10 @@ async def create_project(request_data: ProjectCreateRequest) -> ProjectData:
         deadline=int(project.deadline.timestamp() * 1000) if project.deadline else None,
         payroll=payroll_data,
         archived=project.archived,
-        creatorId=project.creator_id,
-        organizationId=project.organization_id,
+        creator_id=project.creator_id,
+        organization_id=project.organization_id,
         teams=project.teams,
-        createdAt=created_at_timestamp,
+        created_at=created_at_timestamp,
     )
 
 
@@ -79,8 +79,8 @@ async def list_projects() -> list[ProjectData]:
         payroll_data = None
         if project.payroll:
             payroll_data = PayrollData(
-                billRate=project.payroll.bill_rate,
-                overtimeBillrate=project.payroll.overtime_billrate,
+                bill_rate=project.payroll.bill_rate,
+                overtime_billrate=project.payroll.overtime_billrate,
             )
 
         project_data = ProjectData(
@@ -94,10 +94,10 @@ async def list_projects() -> list[ProjectData]:
             deadline=int(project.deadline.timestamp() * 1000) if project.deadline else None,
             payroll=payroll_data,
             archived=project.archived,
-            creatorId=project.creator_id,
-            organizationId=project.organization_id,
+            creator_id=project.creator_id,
+            organization_id=project.organization_id,
             teams=project.teams,
-            createdAt=created_at_timestamp,
+            created_at=created_at_timestamp,
         )
         project_list.append(project_data)
 
@@ -118,8 +118,8 @@ async def get_project(project_id: str) -> ProjectData:
     payroll_data = None
     if project.payroll:
         payroll_data = PayrollData(
-            billRate=project.payroll.bill_rate,
-            overtimeBillrate=project.payroll.overtime_billrate,
+            bill_rate=project.payroll.bill_rate,
+            overtime_billrate=project.payroll.overtime_billrate,
         )
 
     return ProjectData(
@@ -133,10 +133,10 @@ async def get_project(project_id: str) -> ProjectData:
         deadline=int(project.deadline.timestamp() * 1000) if project.deadline else None,
         payroll=payroll_data,
         archived=project.archived,
-        creatorId=project.creator_id,
-        organizationId=project.organization_id,
+        creator_id=project.creator_id,
+        organization_id=project.organization_id,
         teams=project.teams,
-        createdAt=created_at_timestamp,
+        created_at=created_at_timestamp,
     )
 
 
@@ -147,8 +147,8 @@ async def update_project(project_id: str, request_data: ProjectUpdateRequest) ->
     payroll_dict = None
     if request_data.payroll:
         payroll_dict = {
-            "bill_rate": request_data.payroll.billRate,
-            "overtime_billrate": request_data.payroll.overtimeBillrate,
+            "bill_rate": request_data.payroll.bill_rate,
+            "overtime_billrate": request_data.payroll.overtime_billrate,
         }
 
     deadline_datetime = None
@@ -172,8 +172,8 @@ async def update_project(project_id: str, request_data: ProjectUpdateRequest) ->
     payroll_data = None
     if project.payroll:
         payroll_data = PayrollData(
-            billRate=project.payroll.bill_rate,
-            overtimeBillrate=project.payroll.overtime_billrate,
+            bill_rate=project.payroll.bill_rate,
+            overtime_billrate=project.payroll.overtime_billrate,
         )
 
     return ProjectData(
@@ -187,10 +187,10 @@ async def update_project(project_id: str, request_data: ProjectUpdateRequest) ->
         deadline=int(project.deadline.timestamp() * 1000) if project.deadline else None,
         payroll=payroll_data,
         archived=project.archived,
-        creatorId=project.creator_id,
-        organizationId=project.organization_id,
+        creator_id=project.creator_id,
+        organization_id=project.organization_id,
         teams=project.teams,
-        createdAt=created_at_timestamp,
+        created_at=created_at_timestamp,
     )
 
 

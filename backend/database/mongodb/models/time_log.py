@@ -44,8 +44,6 @@ class TimeLog(BaseMongoModel):
     team_id: str | None = Field(default=None)
     shared_settings_id: str | None = Field(default=None)
     organization_id: str | None = Field(default=None)
-    start_translated: datetime = Field()
-    end_translated: datetime = Field()
     negative_time: int = Field(default=0)
     deleted_screenshots: int = Field(default=0)
     index: str | None = Field(default=None, alias="_index")
