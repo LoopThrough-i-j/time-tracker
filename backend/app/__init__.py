@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.dto.response.error_response import ErrorResponse
-from app.routes import v1_router
+from app.routes import html_router, v1_router
 from app.tags import APITags
 
 from constants.exceptions import BadRequestError, Error, NotFoundError
@@ -82,6 +82,7 @@ def create_app():
         )
 
     app.include_router(v1_router)
+    app.include_router(html_router)
 
     @app.get("/")
     async def root():

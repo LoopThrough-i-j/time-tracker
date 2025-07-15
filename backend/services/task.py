@@ -23,7 +23,6 @@ class TaskService:
         priority: str | None = None,
         billable: bool | None = None,
     ) -> Task:
-        # Get project to inherit billable status if not explicitly provided
         project = self.project_actions.get_by_id(project_id)
         if not project:
             raise NotFoundError(f"Project with id {project_id} not found")

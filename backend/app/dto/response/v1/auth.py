@@ -10,3 +10,8 @@ class EmployeeAuthResponse(BaseResponseDataModel):
     name: str = Field()
     email: str = Field()
     team_id: str = Field()
+
+
+class SignupLinkResponse(BaseResponseDataModel):
+    signup_link: str = Field()
+    expiry_hours: int = Field()

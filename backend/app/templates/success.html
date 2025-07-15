@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Successful - Mercor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .success-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .success-icon {
+            background: #198754;
+            color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 2rem;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            transition: transform 0.2s;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+            transform: translateY(-2px);
+        }
+        
+        .download-btn.btn-secondary {
+            background: #6c757d;
+        }
+        
+        .download-btn.btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="d-flex align-items-center justify-content-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="success-container p-4 text-center">
+                    <div class="success-icon">✓</div>
+                    
+                    <h1 class="h2 fw-bold text-dark mb-3">Welcome to Mercor!</h1>
+                    
+                    <p class="text-muted fs-5 mb-4">
+                        Congratulations! Your employee account has been successfully activated.
+                    </p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-body text-start">
+                            <h5 class="card-title">Your Account Details</h5>
+                            <p class="card-text mb-2"><strong>Name:</strong> {{ employee.name }}</p>
+                            <p class="card-text mb-2"><strong>Email:</strong> {{ employee.email }}</p>
+                            <p class="card-text mb-2"><strong>Team ID:</strong> {{ employee.team_id }}</p>
+                            <p class="card-text mb-0"><strong>Employee ID:</strong> {{ employee.id }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="fw-bold text-dark mb-3">Download Mercor Application</h4>
+                        <p class="text-muted mb-4">Get started by downloading our desktop application to track your time and manage tasks.</p>
+                        
+                        <div class="d-grid gap-2 d-md-block">
+                            <button class="btn btn-primary download-btn me-2" onclick="downloadApp('windows')">
+                                Download for Windows
+                            </button>
+                            
+                            <button class="btn btn-secondary download-btn" onclick="downloadApp('mac')">
+                                Download for macOS
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info text-start">
+                        <h6 class="alert-heading">Next Steps:</h6>
+                        <ol class="mb-0">
+                            <li>Download and install the Mercor application</li>
+                            <li>Log in using your email and password</li>
+                            <li>Complete your profile setup</li>
+                            <li>Start tracking your time and managing tasks</li>
+                            <li>Contact your team lead for project assignments</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function downloadApp(platform) {
+            const downloads = {
+                windows: 'https://releases.mercor.com/latest/MercorApp-Setup.exe',
+                mac: 'https://releases.mercor.com/latest/MercorApp.dmg'
+            };
+            
+            alert(`Download link for ${platform}: ${downloads[platform]}\n\nNote: This is a demo. In production, this would start the actual download.`);
+        }
+    </script>
+</body>
+</html>
