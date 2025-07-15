@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from database.mongodb.actions.task import TaskActions
-from database.mongodb.actions.project import ProjectActions
-from database.mongodb.models.task import Task
 from constants.exceptions import NotFoundError
+from database.mongodb.actions.project import ProjectActions
+from database.mongodb.actions.task import TaskActions
+from database.mongodb.models.task import Task
 
 
 class TaskService:

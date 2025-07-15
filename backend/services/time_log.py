@@ -1,9 +1,9 @@
-from database.mongodb.actions.time_log import TimeLogActions
-from database.mongodb.actions.task import TaskActions
-from database.mongodb.actions.project import ProjectActions
-from database.mongodb.actions.employee import EmployeeActions
-from database.mongodb.models.time_log import TimeLog, TimeLogType
 from constants.exceptions import NotFoundError
+from database.mongodb.actions.employee import EmployeeActions
+from database.mongodb.actions.project import ProjectActions
+from database.mongodb.actions.task import TaskActions
+from database.mongodb.actions.time_log import TimeLogActions
+from database.mongodb.models.time_log import TimeLog, TimeLogType
 
 
 class TimeLogService:
@@ -36,7 +36,7 @@ class TimeLogService:
         task = self.task_actions.get_by_id(task_id)
         if not task:
             raise NotFoundError(f"Task with id {task_id} not found")
-        
+
         billable = task.billable
         task_status = task.status
         task_priority = task.priority
@@ -44,7 +44,7 @@ class TimeLogService:
         project = self.project_actions.get_by_id(project_id)
         if not project:
             raise NotFoundError(f"Project with id {project_id} not found")
-        
+
         if project.payroll:
             bill_rate = project.payroll.bill_rate
             overtime_bill_rate = project.payroll.overtime_billrate
@@ -55,7 +55,7 @@ class TimeLogService:
         employee = self.employee_actions.get_by_id(employee_id)
         if not employee:
             raise NotFoundError(f"Employee with id {employee_id} not found")
-        
+
         name = employee.name
         team_id = employee.team_id
 
@@ -96,5 +96,3 @@ class TimeLogService:
         )
 
         return created_time_log
-
-

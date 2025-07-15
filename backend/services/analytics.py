@@ -52,12 +52,14 @@ class AnalyticsService:
 
         result = []
         for project_id, analytics in project_data.items():
-            result.append({
-                "id": project_id,
-                "time": analytics["time"],
-                "costs": analytics["costs"],
-                "income": analytics["income"],
-            })
+            result.append(
+                {
+                    "id": project_id,
+                    "time": analytics["time"],
+                    "costs": analytics["costs"],
+                    "income": analytics["income"],
+                }
+            )
 
         result.sort(key=lambda x: x["time"], reverse=True)
 

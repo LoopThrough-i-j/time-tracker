@@ -98,40 +98,40 @@ class TimeLogActions(BaseActions[TimeLog]):
         offset: int | None = None,
     ) -> list[TimeLog]:
         query = {}
-        
+
         if start_time is not None and end_time is not None:
             query["start"] = {
-                "$gte": datetime.fromtimestamp(start_time / 1000), 
-                "$lte": datetime.fromtimestamp(end_time / 1000)
+                "$gte": datetime.fromtimestamp(start_time / 1000),
+                "$lte": datetime.fromtimestamp(end_time / 1000),
             }
         elif start_time is not None:
             query["start"] = {"$gte": datetime.fromtimestamp(start_time / 1000)}
         elif end_time is not None:
             query["end"] = {"$lte": datetime.fromtimestamp(end_time / 1000)}
-        
+
         if employee_id is not None:
             query["employee_id"] = employee_id
-        
+
         if project_id is not None:
             query["project_id"] = project_id
-        
+
         if task_id is not None:
             query["task_id"] = task_id
-        
+
         if team_id is not None:
             query["team_id"] = team_id
-        
+
         if shift_id is not None:
             query["shift_id"] = shift_id
-        
+
         if billable is not None:
             query["billable"] = billable
-        
+
         if processed is not None:
             query["processed"] = processed
 
         sort = [("start", -1)]
-        
+
         return self.find_records(
             query=query,
             sort=sort,
@@ -154,23 +154,23 @@ class TimeLogActions(BaseActions[TimeLog]):
     ) -> dict[str, dict[str, float]]:
         query = {
             "start": {
-                "$gte": datetime.fromtimestamp(start_time / 1000), 
-                "$lte": datetime.fromtimestamp(end_time / 1000)
+                "$gte": datetime.fromtimestamp(start_time / 1000),
+                "$lte": datetime.fromtimestamp(end_time / 1000),
             }
         }
-        
+
         if employee_id is not None:
             query["employee_id"] = employee_id
-        
+
         if team_id is not None:
             query["team_id"] = team_id
-        
+
         if project_id is not None:
             query["project_id"] = project_id
-        
+
         if task_id is not None:
             query["task_id"] = task_id
-        
+
         if shift_id is not None:
             query["shift_id"] = shift_id
 
@@ -182,26 +182,22 @@ class TimeLogActions(BaseActions[TimeLog]):
         )
 
         project_analytics = {}
-        
+
         for log in time_logs:
             project_id = log.project_id
-            
+
             if project_id not in project_analytics:
-                project_analytics[project_id] = {
-                    "time": 0,
-                    "costs": 0.0,
-                    "income": 0.0
-                }
-            
+                project_analytics[project_id] = {"time": 0, "costs": 0.0, "income": 0.0}
+
             duration_ms = int((log.end - log.start).total_seconds() * 1000)
-            
+
             duration_hours = duration_ms / 1000 / 3600
-            
+
             project_analytics[project_id]["time"] += duration_ms
-            
+
             costs = duration_hours * log.pay_rate
             project_analytics[project_id]["costs"] += costs
-            
+
             income = duration_hours * log.bill_rate
             project_analytics[project_id]["income"] += income
 

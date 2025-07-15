@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query
 
-from app.dto.response.v1.time_log import TimeLogResponse
 from app.dto.response.v1.analytics import ProjectTimeAnalytics
+from app.dto.response.v1.time_log import TimeLogResponse
 from app.tags import APITags
 
 from services.analytics import AnalyticsService
