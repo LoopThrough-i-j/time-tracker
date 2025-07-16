@@ -9,7 +9,7 @@ download_html_router = APIRouter(prefix="/download", tags=["Download"])
 
 @download_html_router.get("/app/mac")
 def download_mac_app():
-    file_path = "app/templates/Mercor Time Tracker-1.0.0-arm64.dmg"
+    file_path = "app/static/Mercor Time Tracker-1.0.0-arm64.dmg"
 
     if os.path.exists(file_path):
         return FileResponse(
