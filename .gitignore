@@ -176,4 +176,16 @@ yarn.lock
 
 # Coverage reports
 .coverage.*
-coverage/
+
+# Frontend specific
+**/node_modules/
+**/build/
+**/dist/
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+# Electron
+**/out/
+*.dmg

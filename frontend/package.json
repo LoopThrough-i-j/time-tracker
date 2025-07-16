@@ -1,0 +1,75 @@
+{
+  "name": "mercor-time-tracker",
+  "version": "1.0.0",
+  "description": "Desktop time tracking application for Mercor",
+  "main": "public/electron.js",
+  "homepage": "./",
+  "private": true,
+  "dependencies": {
+    "axios": "^1.6.0",
+    "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.1",
+    "electron-is-dev": "^2.0.0",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.9.1",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "concurrently": "^8.2.0",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "wait-on": "^7.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "electron-builder",
+    "preelectron-pack": "npm run build",
+    "dist": "npm run build && electron-builder --publish=never",
+    "dist-mac": "npm run build && electron-builder --mac --publish=never",
+    "lint": "eslint src --ext .js,.jsx",
+    "lint:fix": "eslint src --ext .js,.jsx --fix"
+  },
+  "build": {
+    "appId": "com.mercor.timetracker",
+    "productName": "Mercor Time Tracker",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "build/**/*",
+      "public/electron.js",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "category": "public.app-category.productivity",
+      "identity": null,
+      "gatekeeperAssess": true
+    },
+    "dmg": {
+      "title": "Mercor Time Tracker"
+    }
+  },
+  "browserslist": [
+    "Electron >= 27.0.0"
+  ]
+}
